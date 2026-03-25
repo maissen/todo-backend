@@ -25,3 +25,18 @@ jobs:
           registry: 975049976794.dkr.ecr.us-east-1.amazonaws.com
           username: ${{ vars.AWS_ACCESS_KEY_ID }}
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push to AWS ECR
+        uses: docker/build-push-action@v7
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            975049976794.dkr.ecr.us-east-1.amazonaws.com/todo-backend:latest
+            975049976794.dkr.ecr.us-east-1.amazonaws.com/todo-backend:v1
