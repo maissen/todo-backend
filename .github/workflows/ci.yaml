@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Set up Docker
         uses: docker/setup-docker-action@v5
@@ -26,10 +27,13 @@ jobs:
       - name: Login to AWS ECR
         uses:  aws-actions/amazon-ecr-login@v2
 
+      - name: Set image tag based on commit sha
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Build and push to AWS ECR
         uses: docker/build-push-action@v7
         with:
           push: true
           tags: |
-            975049976794.dkr.ecr.us-east-1.amazonaws.com/todo-backend:latest
-            975049976794.dkr.ecr.us-east-1.amazonaws.com/todo-backend:v1
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:latest
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}
