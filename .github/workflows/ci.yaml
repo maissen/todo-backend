@@ -28,7 +28,7 @@ jobs:
             ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@v0.35.0
         with:
           image-ref: '${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}'
 
