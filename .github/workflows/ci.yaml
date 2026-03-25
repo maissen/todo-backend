@@ -18,3 +18,10 @@ jobs:
 
       - name: Print docker version
         run: docker --version
+
+      - name: Login to AWS ECR
+        uses: docker/login-action@v4
+        with:
+          registry: 975049976794.dkr.ecr.us-east-1.amazonaws.com
+          username: ${{ vars.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
