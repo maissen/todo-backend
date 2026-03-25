@@ -31,13 +31,16 @@ jobs:
         uses: aquasecurity/trivy-action@v0.35.0
         with:
           image-ref: '${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+          
+      # - name: Set AWS creds env variables
+      #   uses: aws-actions/configure-aws-credentials@v6
+      #   with:
+      #     aws-region: us-east-1
+      #     aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Set AWS creds env variables
-        uses: aws-actions/configure-aws-credentials@v6
-        with:
-          aws-region: us-east-1
-          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Login to AWS ECR
-        uses:  aws-actions/amazon-ecr-login@v2
+      # - name: Login to AWS ECR
+      #   uses:  aws-actions/amazon-ecr-login@v2
