@@ -11,7 +11,22 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Set image tag based on commit sha
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
       
+      - name: Build Docker image
+        uses: docker/build-push-action@v7
+        with:
+          tags: |
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:latest
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}
+
+      - name: Create new ECS task definition revision
+        run: |
+          jq --arg IMG "${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.SHORT_SHA }}" \
+            '.containerDefinitions[0].image=$IMG' task-definition-template.json > task-definition.json
+        
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -21,17 +36,6 @@ jobs:
 
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Set image tag based on commit sha
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
-
-      - name: Pull image from ECR
-        run: docker pull ${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.SHORT_SHA }}
-
-      - name: Create new ECS task definition revision
-        run: |
-          jq --arg IMG "${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.SHORT_SHA }}" \
-            '.containerDefinitions[0].image=$IMG' task-definition-template.json > task-definition.json
 
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
