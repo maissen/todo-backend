@@ -77,7 +77,10 @@ jobs:
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Set image tag based on commit sha
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Pull image from ECR
-        run: docker pull ${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        run: docker pull ${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.SHORT_SHA }}
 
 
