@@ -62,7 +62,7 @@ async def get_current_user(
 
 @app.get("/")
 async def root():
-    return {"message": "Todo API is running"}
+    return {"message": "Todo API is running v2"}
 
 
 # Authentication Endpoints
