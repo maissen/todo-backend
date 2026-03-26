@@ -1,0 +1,83 @@
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches: 
+      - main
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5
+
+      - name: Set image tag based on commit sha
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v7
+        with:
+          push: false
+          load: true
+          tags: |
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:latest
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          image-ref: '${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}'
+          exit-code: '0'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+
+      # merging to main specific actions
+      - name: Configure AWS credentials
+        if: github.ref == 'refs/heads/main'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to ECR
+        if: github.ref == 'refs/heads/main'
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Push Docker image
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: |
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:latest
+            ${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}
+
+  CD:
+    needs: 
+      - CI
+
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Pull image from ECR
+        run: docker pull ${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+
