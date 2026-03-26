@@ -1,0 +1,132 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:339712991953:task-definition/backend-task-definition:1",
+    "containerDefinitions": [
+        {
+            "name": "backend",
+            "image": "",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "restartPolicy": {
+                "enabled": true
+            },
+            "environment": [
+                {
+                    "name": "DB_PORT",
+                    "value": "5500"
+                },
+                {
+                    "name": "DB_HOST",
+                    "value": "my-app-db.chemq0y8gcwr.us-east-2.rds.amazonaws.com"
+                },
+                {
+                    "name": "DB_NAME",
+                    "value": "tododb"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "linuxParameters": {
+                "initProcessEnabled": false
+            },
+            "secrets": [
+                {
+                    "name": "DB_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339712991953:secret:rds!db-3cc7ccf8-427f-4081-ab8f-5b42595d1305-i1bC9v:username::"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339712991953:secret:rds!db-3cc7ccf8-427f-4081-ab8f-5b42595d1305-i1bC9v:password::"
+                }
+            ],
+            "startTimeout": 30,
+            "stopTimeout": 120,
+            "versionConsistency": "disabled",
+            "privileged": false,
+            "readonlyRootFilesystem": true,
+            "interactive": false,
+            "pseudoTerminal": false,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/aws/ecs/backend-service/backend",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "backend-task-definition",
+    "taskRoleArn": "arn:aws:iam::339712991953:role/backend-service-tasks-2026032610205928930000000a",
+    "executionRoleArn": "arn:aws:iam::339712991953:role/maiss-vpc-ecs-task-execution-role",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.container-restart-policy"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.container-ordering"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE",
+        "MANAGED_INSTANCES"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2026-03-26T10:21:01.188Z",
+    "registeredBy": "arn:aws:iam::339712991953:user/kk_labs_user_240807",
+    "tags": [
+        {
+            "key": "Environment",
+            "value": "dev"
+        },
+        {
+            "key": "ManagedBy",
+            "value": "Terraform"
+        }
+    ]
+}
