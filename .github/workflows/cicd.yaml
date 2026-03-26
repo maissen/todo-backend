@@ -96,7 +96,7 @@ jobs:
         with:
           task-definition: task-definition.json
           service: backend-service
-          cluster: my-cluster
+          cluster: web-app-cluster
           wait-for-service-stability: true
 
 
