@@ -9,7 +9,7 @@ jobs:
   deploy-to-ecs:
     runs-on: ubuntu-latest
     env:
-      IMAGE_TAG: ${{ github.sha::7 }}
+      IMAGE_TAG: ${{ github.sha.substring(0,7) }}
 
     steps:
       - name: Configure AWS credentials
