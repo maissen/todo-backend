@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:339712991953:task-definition/backend-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:211125588626:task-definition/backend-task-definition:1",
     "containerDefinitions": [
         {
             "name": "backend",
-            "image": "",
+            "image": "maissendev/todo-backend",
             "cpu": 0,
             "portMappings": [
                 {
@@ -13,9 +13,6 @@
                 }
             ],
             "essential": true,
-            "restartPolicy": {
-                "enabled": true
-            },
             "environment": [
                 {
                     "name": "DB_PORT",
@@ -23,7 +20,7 @@
                 },
                 {
                     "name": "DB_HOST",
-                    "value": "my-app-db.chemq0y8gcwr.us-east-2.rds.amazonaws.com"
+                    "value": "my-app-db.c1k0kacqgdpz.us-east-2.rds.amazonaws.com"
                 },
                 {
                     "name": "DB_NAME",
@@ -32,30 +29,20 @@
             ],
             "mountPoints": [],
             "volumesFrom": [],
-            "linuxParameters": {
-                "initProcessEnabled": false
-            },
             "secrets": [
                 {
                     "name": "DB_USER",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339712991953:secret:rds!db-3cc7ccf8-427f-4081-ab8f-5b42595d1305-i1bC9v:username::"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:211125588626:secret:rds!db-8ba6961b-8b72-4ba8-a956-be8918bab97f-roQJqx:username::"
                 },
                 {
                     "name": "DB_PASSWORD",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339712991953:secret:rds!db-3cc7ccf8-427f-4081-ab8f-5b42595d1305-i1bC9v:password::"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:211125588626:secret:rds!db-8ba6961b-8b72-4ba8-a956-be8918bab97f-roQJqx:password::"
                 }
             ],
-            "startTimeout": 30,
-            "stopTimeout": 120,
-            "versionConsistency": "disabled",
-            "privileged": false,
-            "readonlyRootFilesystem": true,
-            "interactive": false,
-            "pseudoTerminal": false,
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/aws/ecs/backend-service/backend",
+                    "awslogs-group": "/ecs/backend-task-definition",
                     "awslogs-region": "us-east-2",
                     "awslogs-stream-prefix": "ecs"
                 }
@@ -64,8 +51,7 @@
         }
     ],
     "family": "backend-task-definition",
-    "taskRoleArn": "arn:aws:iam::339712991953:role/backend-service-tasks-2026032610205928930000000a",
-    "executionRoleArn": "arn:aws:iam::339712991953:role/maiss-vpc-ecs-task-execution-role",
+    "executionRoleArn": "arn:aws:iam::211125588626:role/maiss-vpc-ecs-task-execution-role",
     "networkMode": "awsvpc",
     "revision": 1,
     "volumes": [],
@@ -81,19 +67,7 @@
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
         },
         {
-            "name": "ecs.capability.container-restart-policy"
-        },
-        {
             "name": "ecs.capability.secrets.asm.environment-variables"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.container-ordering"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
@@ -105,20 +79,16 @@
     "placementConstraints": [],
     "compatibilities": [
         "EC2",
-        "FARGATE",
-        "MANAGED_INSTANCES"
+        "MANAGED_INSTANCES",
+        "FARGATE"
     ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "cpu": "256",
     "memory": "512",
-    "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "LINUX"
-    },
-    "registeredAt": "2026-03-26T10:21:01.188Z",
-    "registeredBy": "arn:aws:iam::339712991953:user/kk_labs_user_240807",
+    "registeredAt": "2026-03-27T04:22:40.733Z",
+    "registeredBy": "arn:aws:iam::211125588626:user/kk_labs_user_745560",
     "tags": [
         {
             "key": "Environment",
@@ -127,6 +97,10 @@
         {
             "key": "ManagedBy",
             "value": "Terraform"
+        },
+        {
+            "key": "Name",
+            "value": "backend-task-definition"
         }
     ]
 }
