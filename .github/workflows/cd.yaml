@@ -25,6 +25,9 @@ jobs:
           role-to-assume: arn:aws:iam::180294196544:role/GihubActionsRole
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
       
