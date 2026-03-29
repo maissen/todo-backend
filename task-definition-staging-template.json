@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:891377072964:task-definition/backend-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:339713012203:task-definition/backend-task-definition:1",
     "containerDefinitions": [
         {
             "name": "backend",
@@ -20,7 +20,7 @@
                 },
                 {
                     "name": "DB_HOST",
-                    "value": "my-app-db.cfqaa680epfm.us-east-2.rds.amazonaws.com"
+                    "value": "staging-db.cl2kcs8gubcw.us-east-2.rds.amazonaws.com"
                 },
                 {
                     "name": "DB_NAME",
@@ -32,11 +32,11 @@
             "secrets": [
                 {
                     "name": "DB_USER",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:891377072964:secret:rds!db-5c808f04-2c58-45e4-8619-9cfd69a431a5-0jCbmF:username::"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339713012203:secret:rds!db-dce8e761-3d7c-49f9-b9c7-cfa0eeff3315-jPfOfX:username::"
                 },
                 {
                     "name": "DB_PASSWORD",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:891377072964:secret:rds!db-5c808f04-2c58-45e4-8619-9cfd69a431a5-0jCbmF:password::"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339713012203:secret:rds!db-dce8e761-3d7c-49f9-b9c7-cfa0eeff3315-jPfOfX:password::"
                 }
             ],
             "logConfiguration": {
@@ -51,7 +51,7 @@
         }
     ],
     "family": "backend-task-definition",
-    "executionRoleArn": "arn:aws:iam::891377072964:role/maiss-vpc-ecs-task-execution-role",
+    "executionRoleArn": "arn:aws:iam::339713012203:role/staging-vpc-ecs-task-execution-role",
     "networkMode": "awsvpc",
     "revision": 1,
     "volumes": [],
@@ -87,8 +87,8 @@
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2026-03-29T05:57:26.811Z",
-    "registeredBy": "arn:aws:iam::891377072964:user/kk_labs_user_829920",
+    "registeredAt": "2026-03-29T15:03:37.057Z",
+    "registeredBy": "arn:aws:iam::339713012203:user/kk_labs_user_160528",
     "tags": [
         {
             "key": "Environment",
