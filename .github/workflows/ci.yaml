@@ -10,7 +10,7 @@ jobs:
     name: Detect changes
     runs-on: ubuntu-latest
     outputs:
-      code_changed: ${{ steps.filter.outputs.docs != 'true' }}
+      should_run_ci: ${{ steps.filter.outputs.code == 'true' || steps.filter.outputs.ci == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -19,13 +19,18 @@ jobs:
         id: filter
         with:
           filters: |
-            docs:
-              - 'docs/**'
-              - '**.md'
+            code:
+              - '**.py'
+              - 'Dockerfile'
+              - 'docker-compose*.yml'
+              - 'requirements*.txt'
+            
+            ci:
+              - '.github/workflows/ci.yaml'
 
   build-and-test:
     needs: changes
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.should_run_ci == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -60,8 +65,8 @@ jobs:
     steps:
       - name: Report CI result
         run: |
-          if [[ "${{ needs.changes.outputs.code_changed }}" != "true" ]]; then
-            echo "CI skipped: docs-only change"
+          if [[ "${{ needs.changes.outputs.should_run_ci }}" == "false" ]]; then
+            echo "CI skipped: no changes requiring CI execution (code, config, or pipeline)"
             exit 0
           fi
 
