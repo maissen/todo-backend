@@ -10,7 +10,7 @@ jobs:
     name: Detect changes
     runs-on: ubuntu-latest
     outputs:
-      code_changed: ${{ steps.filter.outputs.code }}
+      code_changed: ${{ !steps.filter.outputs.docs }}
     steps:
       - uses: actions/checkout@v4
 
@@ -19,10 +19,9 @@ jobs:
         id: filter
         with:
           filters: |
-            code:
-              - '**'
-              - '!docs/**'
-              - '!**.md'
+            docs:
+              - 'docs/**'
+              - '**.md'
 
   build-and-test:
     needs: changes
