@@ -5,7 +5,7 @@ on:
     paths:
       - "**.py"
       - "**.yaml"
-      - "**.yaml"
+      - "**.yml"
       - "Dockerfile"
     branches:
       - main
