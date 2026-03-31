@@ -2,15 +2,30 @@ name: CI
 
 on:
   pull_request:
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
     branches:
       - main
 
 jobs:
-  CI-build-and-test:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      code_changed: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check changed paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - '**'
+              - '!docs/**'
+              - '!**.md'
+
+  build-and-test:
+    if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -39,16 +54,20 @@ jobs:
           ignore-unfixed: true
 
   CI-status:
-    needs: [CI-build-and-test]
+    needs: [changes, build-and-test]
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        if [[ "${{ needs.CI-build-and-test.result }}" == "skipped" ]]; then
-          echo "CI skipped"
-        elif [[ "${{ needs.CI-build-and-test.result }}" == "success" ]]; then
-          echo "CI passed"
-        else
-          echo "CI failed"
-          exit 1
-        fi
+      - name: Report CI result
+        run: |
+          if [[ "${{ needs.changes.outputs.code_changed }}" != "true" ]]; then
+            echo "CI skipped: docs-only change"
+            exit 0
+          fi
+
+          if [[ "${{ needs.build-and-test.result }}" == "success" ]]; then
+            echo "CI passed"
+          else
+            echo "CI failed"
+            exit 1
+          fi
