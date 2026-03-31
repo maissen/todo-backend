@@ -25,6 +25,7 @@ jobs:
               - '!**.md'
 
   build-and-test:
+    needs: changes
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     steps:
