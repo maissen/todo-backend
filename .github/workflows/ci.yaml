@@ -43,11 +43,12 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          if [[ "${{ needs.build.result }}" == "skipped" ]]; then
-            echo "CI skipped"
-          else if [[ "${{ needs.build.result }}" == "success" ]]; then
-            echo "CI passed"
-          else
-            exit 1
-          fi
+    - run: |
+        if [[ "${{ needs.CI-build-and-test.result }}" == "skipped" ]]; then
+          echo "CI skipped"
+        elif [[ "${{ needs.CI-build-and-test.result }}" == "success" ]]; then
+          echo "CI passed"
+        else
+          echo "CI failed"
+          exit 1
+        fi
