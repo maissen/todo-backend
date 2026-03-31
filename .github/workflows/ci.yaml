@@ -10,6 +10,7 @@ on:
 
 jobs:
   CI-build-and-test:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -36,3 +37,17 @@ jobs:
           exit-code: '0'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
+
+  CI-status:
+    needs: [build, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [[ "${{ needs.build.result }}" == "skipped"; then
+            echo "CI skipped"
+          else if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "CI passed"
+          else
+            exit 1
+          fi
