@@ -39,12 +39,12 @@ jobs:
           ignore-unfixed: true
 
   CI-status:
-    needs: [build, test]
+    needs: [CI-build-and-test]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - run: |
-          if [[ "${{ needs.build.result }}" == "skipped"; then
+          if [[ "${{ needs.build.result }}" == "skipped" ]]; then
             echo "CI skipped"
           else if [[ "${{ needs.build.result }}" == "success" ]]; then
             echo "CI passed"
