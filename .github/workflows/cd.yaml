@@ -29,6 +29,7 @@ jobs:
               - '!**.md'
 
   build-and-push:
+    name: Build and push to ECR
     needs: changes
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
@@ -57,6 +58,7 @@ jobs:
             ${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.SHORT_SHA }}
 
   deploy-staging:
+    name: Deploy to Staging
     needs: [changes, build-and-push]
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
@@ -93,6 +95,7 @@ jobs:
           wait-for-service-stability: true
 
   deploy-prod:
+    name: Deploy to Prod
     needs: [changes, deploy-staging]
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
