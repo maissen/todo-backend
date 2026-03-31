@@ -14,7 +14,7 @@ jobs:
     name: Detect changes
     runs-on: ubuntu-latest
     outputs:
-      code_changed: ${{ steps.filter.outputs.docs != 'true' }}
+      deployable: ${{ steps.filter.outputs.deployable }}
     steps:
       - uses: actions/checkout@v4
 
@@ -23,13 +23,16 @@ jobs:
         id: filter
         with:
           filters: |
-            docs:
-              - 'docs/**'
-              - '**.md'
+            deployable:
+              - '**.py'
+              - 'Dockerfile'
+              - 'docker-compose*.yml'
+              - '*-template.json'
+              - 'requirements*.txt'
 
   build-and-push:
     needs: changes
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -57,7 +60,7 @@ jobs:
 
   deploy-staging:
     needs: [changes, build-and-push]
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -93,7 +96,7 @@ jobs:
 
   deploy-prod:
     needs: [changes, deploy-staging]
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     environment:
       name: production
