@@ -2,8 +2,14 @@ name: Lint
 
 on:
   pull_request:
+    paths:
+      - "**.py"
+      - "**.yaml"
+      - "**.yaml"
+      - "Dockerfile"
     branches:
       - main
+
 
 jobs:
   python-lint:
@@ -45,7 +51,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
