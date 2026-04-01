@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -10,7 +11,8 @@ jobs:
     name: Detect changes
     runs-on: ubuntu-latest
     outputs:
-      should_run_ci: ${{ steps.filter.outputs.code == 'true' || steps.filter.outputs.ci == 'true' }}
+      should_run_ci: >-
+        ${{ steps.filter.outputs.code == 'true' || steps.filter.outputs.ci == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -24,7 +26,7 @@ jobs:
               - 'Dockerfile'
               - 'docker-compose*.yml'
               - 'requirements*.txt'
-            
+
             ci:
               - '.github/workflows/ci.yaml'
 
@@ -53,7 +55,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.35.0
         with:
-          image-ref: '${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}'
+          image-ref: >-
+            '${{vars.ECR_REGISTRY}}/${{vars.IMAGE_NAME}}:${{env.SHORT_SHA}}'
           exit-code: '0'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
@@ -68,7 +71,6 @@ jobs:
           if [[ "${{ needs.changes.outputs.should_run_ci }}" == "false" ]]; then
             echo "CI skipped: no changes requiring CI execution (code, config, or pipeline)"
             exit 0
-          fi
 
           if [[ "${{ needs.build-and-test.result }}" == "success" ]]; then
             echo "CI passed"
