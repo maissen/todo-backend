@@ -26,7 +26,6 @@ jobs:
             deployable:
               - '**.py'
               - 'Dockerfile'
-              - 'docker-compose*.yml'
               - '*-template.json'
               - 'requirements*.txt'
 
