@@ -2,24 +2,6 @@
 
 A RESTful API for managing todos, built with FastAPI and MySQL.
 
-## Features
-
-- ✅ User authentication with JWT tokens
-- ✅ CRUD operations for todos
-- ✅ MySQL database integration
-- ✅ Docker containerization
-- ✅ Environment-based configuration
-- ✅ Comprehensive error handling
-
-## Tech Stack
-
-- **FastAPI**: Modern Python web framework
-- **SQLAlchemy**: SQL toolkit and ORM
-- **MySQL**: Relational database (external)
-- **JWT**: Token-based authentication
-- **Docker**: Containerization
-- **Uvicorn**: ASGI server
-
 ## Project Structure
 
 ```
