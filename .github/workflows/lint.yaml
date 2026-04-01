@@ -28,7 +28,7 @@ jobs:
         run: pip install ruff black
 
       - name: Run Ruff linter
-        run: ruff check .
+        run: ruff check . --output-format=github
 
       - name: Run black format checker
         run: black --check .
