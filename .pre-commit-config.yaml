@@ -9,6 +9,7 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
+        args: ["-c", ".yamllint.yaml"]
 
   - repo: https://github.com/hadolint/hadolint
     rev: v2.12.0
