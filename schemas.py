@@ -38,10 +38,10 @@ class TodoResponse(BaseModel):
     imageUrl: Optional[str] = None
     createdAt: datetime
     updatedAt: Optional[datetime] = None
-    
+
     class Config:
         from_attributes = True
-    
+
     @classmethod
     def from_orm(cls, obj):
         return cls(
@@ -49,9 +49,9 @@ class TodoResponse(BaseModel):
             title=obj.title,
             description=obj.description,
             completed=obj.completed,
-            imageUrl=getattr(obj, 'image_url', None),
+            imageUrl=getattr(obj, "image_url", None),
             createdAt=obj.created_at,
-            updatedAt=obj.updated_at
+            updatedAt=obj.updated_at,
         )
 
 
