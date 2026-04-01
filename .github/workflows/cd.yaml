@@ -2,7 +2,7 @@ name: CD
 
 on:
   push:
-    branches: 
+    branches:
       - main
 
 permissions:
@@ -129,4 +129,3 @@ jobs:
           service: ${{ vars.ECS_SERVICE }}
           cluster: ${{ vars.ECS_CLUSTER }}
           wait-for-service-stability: true
-
