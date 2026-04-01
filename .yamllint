@@ -1,19 +1,19 @@
 extends: default
 
 rules:
-  line-length:
-    max: 120
-    level: warning
+  line-length: disable
 
   truthy:
     allowed-values: ['true', 'false', 'on']
     level: warning
 
   document-start:
-    level: warning
+    present: false
 
   trailing-spaces:
     level: error
 
   empty-lines:
     max: 1
+
+  new-line-at-end-of-file: disable
