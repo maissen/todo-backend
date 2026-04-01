@@ -10,9 +10,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Install system dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        gcc \
-        default-libmysqlclient-dev \
-        pkg-config \
+        gcc=4:12.2.0-3 \
+        default-libmysqlclient-dev=1.0.2 \
+        pkg-config=1.8.1-1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file
