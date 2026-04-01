@@ -63,3 +63,19 @@ jobs:
       - name: Run yamllint
         run: yamllint .
 
+  lint-status:
+    needs: [python-lint, yaml-lint, docker-lint]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Check lint results
+        run: |
+          if [[ "${{ needs.python-lint.result }}" != "success" || \
+                "${{ needs.docker-lint.result }}" != "success" || \
+                "${{ needs.yaml-lint.result }}" != "success" ]]; then
+            echo "Lint failed"
+            exit 1
+          fi
+
+          echo "All lint checks passed"
