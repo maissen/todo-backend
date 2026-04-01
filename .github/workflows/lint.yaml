@@ -11,70 +11,20 @@ on:
       - main
 
 jobs:
-  python-lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install linting tools
-        run: pip install ruff black
-
-      - name: Run Ruff linter
-        run: ruff check . --output-format=github
-
-      - name: Run black format checker
-        run: black --check .
-
-  docker-lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Run Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: Dockerfile
-
-  yaml-lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install yamllint
-        run: pip install yamllint
-
-      - name: Run yamllint
-        run: yamllint .
-
   lint-status:
-    needs: [python-lint, yaml-lint, docker-lint]
     runs-on: ubuntu-latest
-    if: always()
 
     steps:
-      - name: Check lint results
-        run: |
-          if [[ "${{ needs.python-lint.result }}" != "success" || \
-                "${{ needs.docker-lint.result }}" != "success" || \
-                "${{ needs.yaml-lint.result }}" != "success" ]]; then
-            echo "Lint failed"
-            exit 1
-          fi
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-          echo "All lint checks passed"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit hooks
+        run: pre-commit run --all-files
