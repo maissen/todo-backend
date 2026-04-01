@@ -2,6 +2,39 @@
 
 A RESTful API for managing todos, built with FastAPI and MySQL.
 
+## Pre-commit
+
+Pre-commit is a tool that automatically runs code quality checks (linters, formatters, etc.) before each commit. It helps catch issues early by ensuring that only clean and consistent code is committed.
+
+### How it works
+
+- Runs locally when you execute `git commit`
+- Executes defined hooks (Ruff, yamllint, ...)
+- Blocks the commit if any check fails
+- Ensures the same rules are also enforced in CI
+
+### Installation
+```bash
+pip install pre-commit # isntall pre-commit package
+```
+
+```bash
+pre-commit install # install hooks used in .pre-commit-config.yaml
+```
+
+### Usage
+
+**Once installed, pre-commit runs automatically on every commit**. To run all checks manually:
+```bash
+pre-commit run --all-files
+```
+
+### Configuration
+
+Pre-commit uses a configuration file named `.pre-commit-config.yaml`, which defines which tools (hooks) are executed and their versions.
+
+---
+
 ## Project Structure
 
 ```
