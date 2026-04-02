@@ -58,7 +58,7 @@ async def get_current_user(
 
 @app.get("/")
 async def root():
-    return {"message": "Todo Backend server is running with v1"}
+    return {"message": "Todo Backend server is running with v2"}
 
 
 # Authentication Endpoints
