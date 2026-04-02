@@ -89,8 +89,8 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: task-definition.json
-          service: ${{ vars.ECS_SERVICE }}
-          cluster: ${{ vars.ECS_CLUSTER }}
+          service: ${{ vars.STAGING_ECS_SERVICE }}
+          cluster: ${{ vars.STAGING_ECS_CLUSTER }}
           wait-for-service-stability: true
 
   deploy-prod:
@@ -125,6 +125,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: task-definition.json
-          service: ${{ vars.ECS_SERVICE }}
-          cluster: ${{ vars.ECS_CLUSTER }}
+          service: ${{ vars.PROD_ECS_SERVICE }}
+          cluster: ${{ vars.PROD_ECS_CLUSTER }}
           wait-for-service-stability: true
