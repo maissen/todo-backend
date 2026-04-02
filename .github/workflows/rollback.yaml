@@ -1,0 +1,64 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to rollback (staging or production)"
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+      image_tag:
+        description: "Image tag - short SHA to rollback to (7 chars)"
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::637423409202:role/GithubActionsRole
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set variables based on environment
+        id: vars
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "staging" ]; then
+            echo "TASK_TEMPLATE=task-definition-staging-template.json" >> $GITHUB_ENV
+            echo "ECS_SERVICE=${{ vars.STAGING_ECS_SERVICE }}" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=${{ vars.STAGING_ECS_CLUSTER }}" >> $GITHUB_ENV
+
+          else
+            echo "TASK_TEMPLATE=task-definition-prod-template.json" >> $GITHUB_ENV
+            echo "ECS_SERVICE=${{ vars.PROD_ECS_SERVICE }}" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=${{ vars.PROD_ECS_CLUSTER }}" >> $GITHUB_ENV
+          fi
+
+      - name: Create ECS task definition for rollback
+        run: |
+          jq --arg IMG "${{ vars.ECR_REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ github.event.inputs.image_tag }}" \
+            '.containerDefinitions[0].image=$IMG' $TASK_TEMPLATE > task-definition.json
+
+      - name: Deploy rollback to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: task-definition.json
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
