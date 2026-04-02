@@ -1,0 +1,106 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:637423409202:task-definition/backend-task-definition:1",
+    "containerDefinitions": [
+        {
+            "name": "backend",
+            "image": "maissendev/todo-backend",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DB_PORT",
+                    "value": "5500"
+                },
+                {
+                    "name": "DB_HOST",
+                    "value": "staging-db.c32yscuq8c0v.us-east-2.rds.amazonaws.com"
+                },
+                {
+                    "name": "DB_NAME",
+                    "value": "tododb"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:637423409202:secret:rds!db-8b185535-fd2d-4598-b265-863d2027f6e8-gEjrPC:username::"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:637423409202:secret:rds!db-8b185535-fd2d-4598-b265-863d2027f6e8-gEjrPC:password::"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/backend-task-definition",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "backend-task-definition",
+    "executionRoleArn": "arn:aws:iam::637423409202:role/staging-vpc-ecs-task-execution-role",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "registeredAt": "2026-04-02T08:44:18.990Z",
+    "registeredBy": "arn:aws:iam::637423409202:user/kk_labs_user_236987",
+    "tags": [
+        {
+            "key": "Environment",
+            "value": "dev"
+        },
+        {
+            "key": "ManagedBy",
+            "value": "Terraform"
+        },
+        {
+            "key": "Name",
+            "value": "backend-task-definition"
+        }
+    ]
+}
