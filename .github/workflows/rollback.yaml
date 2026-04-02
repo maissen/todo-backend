@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   staging-rollback:
-    if: github.event.inputs.environment == "staging"
+    if: github.event.inputs.environment == 'staging'
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -54,7 +54,7 @@ jobs:
           wait-for-service-stability: true
 
   prod-rollback:
-    if: github.event.inputs.environment == "production"
+    if: github.event.inputs.environment == 'production'
     runs-on: ubuntu-latest
     environment:
       name: production
