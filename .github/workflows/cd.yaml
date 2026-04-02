@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: staging
-      url: staging.maissen.com
+      url: https://staging.maissen.com
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
