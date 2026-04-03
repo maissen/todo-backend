@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:339712707627:task-definition/backend-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:913524910077:task-definition/backend-task-definition:1",
     "containerDefinitions": [
         {
             "name": "backend",
@@ -20,7 +20,7 @@
                 },
                 {
                     "name": "DB_HOST",
-                    "value": "staging-db.ch4w2640gps3.us-east-2.rds.amazonaws.com"
+                    "value": "staging-db.cp2k842s2wrt.us-east-2.rds.amazonaws.com"
                 },
                 {
                     "name": "DB_NAME",
@@ -32,11 +32,11 @@
             "secrets": [
                 {
                     "name": "DB_USER",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339712707627:secret:rds!db-5ad3d9f6-3e36-4763-b97d-f9396ac35a78-gj7M4W:username::"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:913524910077:secret:rds!db-8ce08f0c-5d93-438e-8e7a-9f60fcc00f54-Y4nbAM:username::"
                 },
                 {
                     "name": "DB_PASSWORD",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:339712707627:secret:rds!db-5ad3d9f6-3e36-4763-b97d-f9396ac35a78-gj7M4W:password::"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:913524910077:secret:rds!db-8ce08f0c-5d93-438e-8e7a-9f60fcc00f54-Y4nbAM:password::"
                 }
             ],
             "logConfiguration": {
@@ -51,7 +51,7 @@
         }
     ],
     "family": "backend-task-definition",
-    "executionRoleArn": "arn:aws:iam::339712707627:role/staging-vpc-ecs-task-execution-role",
+    "executionRoleArn": "arn:aws:iam::913524910077:role/staging-vpc-ecs-task-execution-role",
     "networkMode": "awsvpc",
     "revision": 1,
     "volumes": [],
@@ -79,16 +79,16 @@
     "placementConstraints": [],
     "compatibilities": [
         "EC2",
-        "FARGATE",
-        "MANAGED_INSTANCES"
+        "MANAGED_INSTANCES",
+        "FARGATE"
     ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2026-04-02T15:14:19.127Z",
-    "registeredBy": "arn:aws:iam::339712707627:user/kk_labs_user_566794",
+    "registeredAt": "2026-04-03T07:09:15.952Z",
+    "registeredBy": "arn:aws:iam::913524910077:user/kk_labs_user_467565",
     "tags": [
         {
             "key": "Environment",
